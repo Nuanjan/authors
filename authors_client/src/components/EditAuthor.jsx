@@ -8,7 +8,8 @@ const EditAuthor = ({authorList, setAuthorList}) => {
    const {state} = useLocation();
    const navigate = useNavigate();
    // Put state into the function in case of state == null(mean wrong id or id this not come from author list)
-   // so it will return undefined
+   // because JS will throw an error if object is null
+   // so in function it will if typeof state is null will return undefined
    // other white it will get error before render the component
    const getIdandName = (state) => {
        if(state){
@@ -16,6 +17,8 @@ const EditAuthor = ({authorList, setAuthorList}) => {
        }
        return typeof state;
    }
+   // another way is not send a state with navigate, then call get method
+   // and check if Id is exist in db 
    const {_id, name} = getIdandName(state);
    console.log(_id, name)
    const [author, setAuthor] = useState({name:name})

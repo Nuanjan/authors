@@ -18,7 +18,7 @@ const buttonContainerStyle={
 const errStyle={
     color: "red"
 }
-const AuthorFormContainer = ({onAuthorSubmit, initialAuthor, errMsg, cancelClick}) => {
+const AuthorFormContainer = ({onAuthorSubmit, initialAuthor, errMsg}) => {
     const navigate = useNavigate();
     const [input, setInput] = useState({
        name: initialAuthor.name
@@ -26,9 +26,6 @@ const AuthorFormContainer = ({onAuthorSubmit, initialAuthor, errMsg, cancelClick
     const onAuthorSubmitHandler = (e) => {
         e.preventDefault();
         onAuthorSubmit(input)
-        if(input.name.length > 3){
-            navigate("/")
-        }
     }
 
 const onClickCancel=() => {
