@@ -2,48 +2,55 @@ const Author = require("../models/author.model");
 
 module.exports.index = (req, res) => {
   Author.find()
-    .then((allAuthors) => res.json({ Authors: allAuthors }))
+    .then((allAuthors) => res.json({ authors: allAuthors }))
     .catch((err) => {
       console.log(err);
     });
 };
 module.exports.getOneAuthor = (req, res) => {
-  Author.findOne({ _id: req.params.id })
-    .then((oneAuthor) => res.json({ Author: oneAuthor }))
-    .catch((err) => {
-      console.log(err);
-    });
+  Author.count({_id: req.params.id}, function (err, count){ 
+    if(count>0){
+      Author.findOne({ _id: req.params.id })
+      .then((oneAuthor) => res.json({ author: oneAuthor }))
+      .catch((err) => {
+        console.log(err);
+      });
+    }else {
+      console.log(" id doesn't exist")
+      return res.status(404)
+    }
+}); 
+  
 };
 module.exports.createAuthor = (req, res) => {
   console.log(" this is request body", req.body);
-  let errArr = "";
+  let errText = [];
   Author.create(req.body)
-    .then((Author) => res.json({ Author }))
+    .then((author) => res.json({ author }))
     .catch((err) => {
       if (err.name === "ValidationError") {
-        return (errArr = [
-          ...Object.values(err.errors).map((val) => val.message),
-        ]);
+        errText = [...Object.values(err.errors).map((val) => val.message)];
+        return res.status(400).json({ message: errText[0] });
       }
     })
-    .then((errArr) => res.send(errArr))
     .catch((err) => console.log(err));
 };
 module.exports.updateAuthor = (req, res) => {
-  let errArr = "";
-  Author.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true })
+  let errText = [];
+  console.log(req.body, "request body on put method");
+  Author.findOneAndUpdate({ _id: req.params.id }, req.body, {
+    new: true,
+    runValidators: true,
+  })
     .then((updatedAuthor) => res.json(updatedAuthor))
     .catch((err) => {
       if (err.name === "ValidationError") {
-        return (errArr = [
-          ...Object.values(err.errors).map((val) => val.message),
-        ]);
+        errText = [...Object.values(err.errors).map((val) => val.message)];
+        console.log("got err here");
+        return res.status(400).json({ message: errText[0] });
       }
     })
-    .then((errArr) => res.send(errArr))
-    .catch((err) => {
-      console.log(err);
-    });
+    .catch((err) => console.log(err));
 };
 module.exports.deleteAuthor = (req, res) => {
   Author.deleteOne({ _id: req.params.id })
