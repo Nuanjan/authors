@@ -5,5 +5,4 @@ module.exports = function (app) {
   app.post("/new", AuthorController.createAuthor);
   app.put("/edit/:id", AuthorController.updateAuthor);
   app.delete("/:id", AuthorController.deleteAuthor);
-  
 };

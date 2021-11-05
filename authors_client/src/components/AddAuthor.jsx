@@ -8,7 +8,6 @@ const AddAuthor = ({authorList, setAuthorList}) => {
     const createAuthor = author => {
         axios.post("http://localhost:8000/new", author)
         .then((res) => {
-            console.log(res, " this is res")
             const tempArr = [...authorList, res.data.author]
             tempArr.sort((a,b) => (a.name > b.name)? 1 : ((b.name > a.name)? -1: 0))
             setAuthorList(tempArr)
@@ -16,7 +15,6 @@ const AddAuthor = ({authorList, setAuthorList}) => {
             navigate("/")
         })
         .catch((err) => {
-            console.log("error", err.response.data.message)
             setErrMsg(err.response.data.message)
         })
   }

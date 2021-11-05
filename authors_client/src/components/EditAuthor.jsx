@@ -20,7 +20,6 @@ const EditAuthor = ({authorList, setAuthorList}) => {
    // another way is not send a state with navigate, then call get method
    // and check if Id is exist in db 
    const {_id, name} = getIdandName(state);
-   console.log(_id, name)
    const [author, setAuthor] = useState({name:name})
    const [errMsg, setErrMsg] = useState("")
    useEffect(() => {

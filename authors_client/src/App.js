@@ -12,7 +12,11 @@ function App() {
   const [authorList, setAuthorList] = useState([]);
   useEffect(() => {
     axios.get("http://localhost:8000/").then((res) => {
-      setAuthorList(res.data.authors.sort((a,b) => (a.name > b.name)? 1 : ((b.name > a.name)? -1: 0)));
+      setAuthorList(
+        res.data.authors.sort((a, b) =>
+          a.name > b.name ? 1 : b.name > a.name ? -1 : 0
+        )
+      );
       setIsLoaded(true);
     });
   }, []);
@@ -48,12 +52,7 @@ function App() {
               />
             }
           />
-          <Route
-            path="edit/:id/error"
-            element={
-              <Error/>
-            }
-          />
+          <Route path="edit/:id/error" element={<Error />} />
         </Routes>
       </div>
     </BrowserRouter>
